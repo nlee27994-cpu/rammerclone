@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: rammerclone
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    envVars:
+      - key: TRUST_PROXY
+        value: "true"
+      - key: PASSWORD
+        generateValue: true
