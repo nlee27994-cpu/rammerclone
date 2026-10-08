@@ -9,7 +9,7 @@ const ERROR_PAGE = (url, message) => `<!doctype html>
 code{background:#222;padding:2px 6px;border-radius:4px;word-break:break-all}a{color:#7cf}</style></head>
 <body><h1>Couldn't load this page</h1>
 <p>Requested: <code>${escapeHtml(url)}</code></p>
-<p>Error: <code>${escapeHtml(message)}</code></p>
+<p>Error: <code>${escapeHtml(message.replace(/<[^>]+>/g, ''))}</code></p>
 <p><a href="/">Back to home</a></p></body></html>`;
 
 function escapeHtml(str) {

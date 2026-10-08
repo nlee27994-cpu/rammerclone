@@ -9,6 +9,9 @@ const { Proxy } = require('testcafe-hammerhead');
 const loadClientScript = require('testcafe-hammerhead/lib/utils/load-client-script');
 const SERVICE_ROUTES = require('testcafe-hammerhead/lib/proxy/service-routes');
 const SessionStore = require('./SessionStore');
+const { patchDestinationErrors } = require('./patches');
+
+patchDestinationErrors();
 
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 const MIME = {
