@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rammerclone</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <main>
+        <h1>Rammer<span>clone</span></h1>
+        <p class="tagline">A session-based web proxy. Cookies and logins persist per session.</p>
+
+        <div id="notice" class="notice" hidden></div>
+
+        <section class="card">
+            <label for="session">Session</label>
+            <div class="row">
+                <select id="session"></select>
+                <button id="new-session" type="button">New</button>
+                <button id="delete-session" type="button" class="secondary" title="Delete session">Delete</button>
+            </div>
+
+            <div id="password-row" class="row" hidden>
+                <input id="password" type="password" placeholder="Password required to create sessions" autocomplete="current-password">
+            </div>
+
+            <form id="go-form" class="row">
+                <input id="url" type="text" placeholder="Enter a URL or search term" autocomplete="off" autofocus>
+                <button type="submit">Go</button>
+            </form>
+
+            <div class="shortcuts">
+                <button type="button" data-url="https://www.google.com">Google</button>
+                <button type="button" data-url="https://www.youtube.com">YouTube</button>
+                <button type="button" data-url="https://en.wikipedia.org">Wikipedia</button>
+                <button type="button" data-url="https://duckduckgo.com">DuckDuckGo</button>
+            </div>
+        </section>
+
+        <details class="card">
+            <summary>Import / export session</summary>
+            <p class="hint">Copy a session ID to use the same cookies on another device.</p>
+            <div class="row">
+                <input id="session-id" type="text" readonly>
+                <button id="copy-id" type="button" class="secondary">Copy</button>
+            </div>
+            <div class="row">
+                <input id="import-id" type="text" placeholder="Paste a session ID">
+                <button id="import" type="button" class="secondary">Import</button>
+            </div>
+        </details>
+    </main>
+    <script src="/app.js"></script>
+</body>
+</html>

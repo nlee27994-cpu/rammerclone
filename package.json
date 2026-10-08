@@ -1,0 +1,25 @@
+{
+  "name": "rammerclone",
+  "version": "1.0.0",
+  "description": "A Rammerhead-style session-based web proxy built on testcafe-hammerhead",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nlee27994-cpu/rammerclone.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nlee27994-cpu/rammerclone/issues"
+  },
+  "homepage": "https://github.com/nlee27994-cpu/rammerclone#readme",
+  "dependencies": {
+    "testcafe-hammerhead": "^31.7.8",
+    "ws": "^7.5.13"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
