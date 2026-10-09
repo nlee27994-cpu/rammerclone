@@ -133,7 +133,8 @@
         if (/^[^\s]+\.[^\s]{2,}$/.test(input) || /^localhost(:\d+)?(\/|$)/i.test(input))
             return 'https://' + input;
 
-        return 'https://duckduckgo.com/?q=' + encodeURIComponent(input);
+        // The no-JavaScript version of DuckDuckGo loads much faster through the proxy.
+        return 'https://html.duckduckgo.com/html/?q=' + encodeURIComponent(input);
     }
 
     async function go(input) {
@@ -142,12 +143,20 @@
         if (!url)
             return;
 
+        const button = els.form.querySelector('button');
+
+        button.disabled = true;
+        button.textContent = 'Loading...';
+        notify('Loading the page. The first load can take up to a minute if the server was asleep.', true);
+
         try {
             const id = await ensureSession();
 
             location.href = `/${id}/${url}`;
         }
         catch (err) {
+            button.disabled = false;
+            button.textContent = 'Go';
             notify(err.message);
         }
     }
