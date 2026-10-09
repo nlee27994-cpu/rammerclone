@@ -57,9 +57,16 @@ function stripResponseHeaders(res) {
     };
 }
 
+// When the proxy is served on a default port (e.g. https://proxy.example.com with no ":443"), the
+// parsed proxy location in worker scripts has no port, and hammerhead crashes calling .toString()
+// on it. That breaks every Web Worker, which takes down apps like Spotify's web player.
+function patchMissingPort(script) {
+    return script.replace(/([A-Za-z_$][\w$]*)\.port\.toString\(\)/g, '($1.port||"").toString()');
+}
+
 // Hammerhead (built for TestCafe) replaces the page's real <title> with "<sessionId>*<windowId>"
 // so TestCafe can identify windows. Patch that out so tabs show the site's actual title.
-function patchClientScript(script) {
+function patchTitle(script) {
     const patches = [
         // Don't overwrite the native title with the session/window id.
         [/(_setProxiedTitleValue\s*=\s*function\s*\(\)\s*\{)/, '$1return;'],
@@ -181,10 +188,19 @@ class RammerProxy extends Proxy {
 
         this._registerServiceRoutes(false);
 
-        this.GET(SERVICE_ROUTES.hammerhead, {
-            contentType: 'application/x-javascript',
-            content: patchClientScript(loadClientScript(SERVICE_ROUTES.hammerhead, false)),
-        });
+        // Serve patched versions of hammerhead's client scripts.
+        const clientScripts = [
+            [SERVICE_ROUTES.hammerhead, script => patchTitle(patchMissingPort(script))],
+            [SERVICE_ROUTES.transportWorker, patchMissingPort],
+            [SERVICE_ROUTES.workerHammerhead, patchMissingPort],
+        ];
+
+        for (const [route, patch] of clientScripts) {
+            this.GET(route, {
+                contentType: 'application/x-javascript',
+                content: patch(loadClientScript(route, false)),
+            });
+        }
 
         return new Promise((resolve, reject) => {
             this.server1.once('error', reject);
