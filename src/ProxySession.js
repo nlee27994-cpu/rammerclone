@@ -28,6 +28,12 @@ class ProxySession extends Session {
 
         if (data.cookies)
             this.cookies.setJar(data.cookies);
+
+        // Hammerhead (built for TestCafe) loads <img> directly from the destination site for speed,
+        // unless request hooks are registered. For a proxy that leaks past the proxy, fails on
+        // blocked networks, and gets refused by sites like Google (reCAPTCHA images), so always
+        // route images through the proxy. This flag is only used for that decision.
+        this.requestHookEventProvider.hasRequestEventListeners = () => true;
     }
 
     touch() {
