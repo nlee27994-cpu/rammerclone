@@ -2,6 +2,7 @@
 
 const os = require('os');
 const { Session } = require('testcafe-hammerhead');
+const TOOLBAR_SCRIPT = require('./toolbar');
 
 const ERROR_PAGE = (url, message) => `<!doctype html>
 <html><head><meta charset="utf-8"><title>Proxy error</title>
@@ -50,7 +51,7 @@ class ProxySession extends Session {
     }
 
     async getPayloadScript() {
-        return '';
+        return TOOLBAR_SCRIPT;
     }
 
     handleFileDownload() {}
